@@ -17,7 +17,7 @@
 
 ## 🛠️ How to Use
 
-1. Open `index.html` in your browser (no installation required).  
+1. Open `https://augustos12.github.io/survival-builder-toolkit/` in your browser (no installation required).  
 2. Select the **mode**:
    - **Circle** → generates a 2D circle.  
    - **Sphere** → generates a 3D sphere (projected in 2D).  
