@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Creador de Círculos para Minecraft</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#1b1f24;
+    color:white;
+    text-align:center;
+}
+
+h1{
+    background:#0f1419;
+    padding:15px;
+    margin:0;
+}
+
+.controls{
+    background:#2b3138;
+    padding:15px;
+}
+
+input, select{
+    width:140px;
+    padding:5px;
+    margin:5px;
+    text-align:center;
+}
+
+button{
+    padding:6px 12px;
+    background:#3b82f6;
+    border:none;
+    color:white;
+    cursor:pointer;
+    margin:3px;
+}
+
+button.active{
+    background:#22c55e;
+}
+
+#info{
+    margin:15px;
+    font-weight:bold;
+}
+
+#grid{
+    display:grid;
+    margin:20px auto;
+    width:fit-content;
+    background:#0f1419;
+    padding:10px;
+    border:2px solid #3b82f6;
+}
+
+.cell{
+    width:22px;
+    height:22px;
+    border:1px solid #2f3b46;
+}
+
+.block{
+    background:#3b82f6;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🧱 Creador de Círculos para Minecraft</h1>
+
+<div class="controls">
+    Diámetro:
+    <input type="number" id="diametro" value="21" min="3">
+    Grosor:
+    <input type="number" id="grosor" value="1" min="1">
+    <br>
+
+    Mostrar:
+    <select id="modoVista" onchange="generar()">
+        <option value="completo">Círculo Completo</option>
+        <option value="q1">1/4 Superior Derecho</option>
+        <option value="q2">1/4 Superior Izquierdo</option>
+        <option value="q3">1/4 Inferior Izquierdo</option>
+        <option value="q4">1/4 Inferior Derecho</option>
+    </select>
+
+    <br>
+
+    <button onclick="toggleContador()" id="btnContador">Modo: Total</button>
+    <button onclick="exportarImagen()">Exportar Imagen</button>
+    <button onclick="generar()">Generar</button>
+</div>
+
+<div id="info"></div>
+<div id="grid"></div>
+
+<script>
+let modoStacks=false;
+
+function toggleContador(){
+    modoStacks=!modoStacks;
+    const btn=document.getElementById("btnContador");
+    btn.innerText=modoStacks?"Modo: Stacks":"Modo: Total";
+    btn.classList.toggle("active");
+    generar();
+}
+
+function generar(){
+
+    const diametro=parseInt(document.getElementById("diametro").value);
+    const grosor=parseInt(document.getElementById("grosor").value);
+    const modoVista=document.getElementById("modoVista").value;
+
+    const grid=document.getElementById("grid");
+    const info=document.getElementById("info");
+
+    grid.innerHTML="";
+    grid.style.gridTemplateColumns=`repeat(${diametro},22px)`;
+
+    const radio=diametro/2;
+    const centro=radio-0.5;
+
+    let total=0;
+
+    for(let y=0;y<diametro;y++){
+        for(let x=0;x<diametro;x++){
+
+            let mostrar=true;
+
+            if(modoVista!=="completo"){
+                if(modoVista==="q1" && !(x>=centro && y<centro)) mostrar=false;
+                if(modoVista==="q2" && !(x<centro && y<centro)) mostrar=false;
+                if(modoVista==="q3" && !(x<centro && y>=centro)) mostrar=false;
+                if(modoVista==="q4" && !(x>=centro && y>=centro)) mostrar=false;
+            }
+
+            const cell=document.createElement("div");
+            cell.className="cell";
+
+            if(mostrar){
+                const dx=x-centro;
+                const dy=y-centro;
+                const distancia=Math.sqrt(dx*dx+dy*dy);
+
+                if(distancia<=radio && distancia>=radio-grosor){
+                    cell.classList.add("block");
+                    total++;
+                }
+            }
+
+            grid.appendChild(cell);
+        }
+    }
+
+    if(modoStacks){
+        const stacks=Math.floor(total/64);
+        const sobrantes=total%64;
+        info.innerHTML=`📦 ${stacks} stacks + ${sobrantes} bloques`;
+    }else{
+        info.innerHTML=`🧱 Total de bloques: ${total}`;
+    }
+}
+
+function exportarImagen(){
+
+    const grid=document.getElementById("grid");
+    const cells=[...grid.children];
+    const diametro=parseInt(document.getElementById("diametro").value);
+
+    const tamaño=22;
+    const canvas=document.createElement("canvas");
+    canvas.width=diametro*tamaño;
+    canvas.height=diametro*tamaño;
+
+    const ctx=canvas.getContext("2d");
+
+    cells.forEach((cell,i)=>{
+        const x=(i%diametro)*tamaño;
+        const y=Math.floor(i/diametro)*tamaño;
+
+        ctx.fillStyle="#0f1419";
+        ctx.fillRect(x,y,tamaño,tamaño);
+
+        if(cell.classList.contains("block")){
+            ctx.fillStyle="#3b82f6";
+            ctx.fillRect(x,y,tamaño,tamaño);
+        }
+
+        ctx.strokeStyle="#2f3b46";
+        ctx.strokeRect(x,y,tamaño,tamaño);
+    });
+
+    const link=document.createElement("a");
+    link.download="circulo-minecraft.png";
+    link.href=canvas.toDataURL();
+    link.click();
+}
+
+generar();
+</script>
+
+</body>
+</html>
