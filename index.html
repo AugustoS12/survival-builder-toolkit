@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Survival Builder Toolkit ULTIMATE</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+</head>
+
+<body>
+
+<h1>🧱 Survival Builder Toolkit ULTIMATE</h1>
+
+<div class="tabs">
+<button onclick="playClick(); mostrarTab('circle')">Círculos</button>
+<button onclick="playClick(); mostrarTab('sphere')">Esferas</button>
+<button onclick="playClick(); mostrarTab('beacon')">Beacons</button>
+<button onclick="playClick(); mostrarTab('storage')">Storage</button>
+</div>
+
+<!-- CIRCULO -->
+<div id="circle" class="section">
+<h2>Creador de Círculos</h2>
+
+<input type="number" id="circleDiameter" placeholder="Diámetro">
+<input type="number" id="circleThickness" value="1" placeholder="Grosor">
+
+<select id="circleMode">
+<option value="solid">Sólido</option>
+<option value="hollow">Hueco</option>
+</select>
+
+<select id="circleFraction">
+<option value="full">Completo</option>
+<option value="half">Media</option>
+<option value="quarter">1/4</option>
+</select>
+
+<br><br>
+
+<button onclick="playClick(); dibujarCirculo()">Generar</button>
+<button onclick="playClick(); exportarCanvas('circleCanvas')">Exportar Imagen</button>
+<button onclick="playClick(); guardarProyecto()">Guardar Proyecto</button>
+<button onclick="playClick(); exportarProyectoJSON()">Exportar JSON</button>
+
+<div id="circleInfo"></div>
+<canvas id="circleCanvas" width="500" height="500"></canvas>
+</div>
+
+<!-- ESFERA -->
+<div id="sphere" class="section">
+<h2>Generador de Esferas</h2>
+
+<input type="number" id="sphereDiameter" placeholder="Diámetro">
+<input type="number" id="sphereThickness" value="1" placeholder="Grosor">
+
+<select id="sphereMode">
+<option value="solid">Sólida</option>
+<option value="hollow">Hueca</option>
+</select>
+
+<select id="sphereFraction">
+<option value="full">Completa</option>
+<option value="half">Media</option>
+<option value="quarter">1/4</option>
+</select>
+
+<br><br>
+
+<button onclick="playClick(); calcularEsfera()">Calcular</button>
+
+<br><br>
+<input type="number" id="sphereLayer" placeholder="Capa Y">
+<button onclick="playClick(); dibujarCapaEsfera()">Ver Capa</button>
+<button onclick="playClick(); exportarCanvas('sphereCanvas')">Exportar Imagen</button>
+
+<div id="sphereInfo"></div>
+<canvas id="sphereCanvas" width="500" height="500"></canvas>
+</div>
+
+<!-- BEACON -->
+<div id="beacon" class="section">
+<h2>Calculadora de Beacon</h2>
+<select id="beaconLevel">
+<option value="1">Nivel 1</option>
+<option value="2">Nivel 2</option>
+<option value="3">Nivel 3</option>
+<option value="4">Nivel 4</option>
+</select>
+<button onclick="playClick(); calcularBeacon()">Calcular</button>
+<div id="beaconResult"></div>
+</div>
+
+<!-- STORAGE -->
+<div id="storage" class="section">
+<h2>Calculadora Storage</h2>
+<input type="number" id="totalBlocksInput" placeholder="Bloques totales">
+<button onclick="playClick(); calcularStorage()">Calcular</button>
+<div id="storageResult"></div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
