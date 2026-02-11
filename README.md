@@ -1,4 +1,3 @@
-# survival-builder-toolkit
 # 🧱 Survival Builder Toolkit
 
 **Survival Builder Toolkit** is a web-based Minecraft utility designed for builders and creative enthusiasts. Effortlessly create and visualize **circular and spherical structures** with customizable parameters and export your designs for in-game use.
